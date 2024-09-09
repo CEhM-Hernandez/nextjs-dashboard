@@ -4,7 +4,7 @@ import {
   // ExclamationCircleIcon
 } from '@heroicons/react/24/outline'
 import { ArrowRightIcon } from '@heroicons/react/20/solid'
-import { Button } from './components/button'
+import { Button } from '@/app/ui/components/button'
 
 export default function LoginForm (): JSX.Element {
   return (

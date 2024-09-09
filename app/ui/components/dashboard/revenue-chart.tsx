@@ -1,6 +1,6 @@
-import { generateYAxis } from '@/app/lib/utils'
-import { CalendarIcon } from '@heroicons/react/24/outline'
-import { lusitana } from '@/app/ui/fonts'
+// import { generateYAxis } from '@/app/lib/utils'
+// import { CalendarIcon } from '@heroicons/react/24/outline'
+import { fonts } from '@/app/ui/fonts'
 import { Revenue } from '@/app/lib/definitions'
 
 // This component is representational only.
@@ -13,8 +13,8 @@ export default async function RevenueChart ({
   revenue
 }: {
   revenue: Revenue[]
-}) {
-  const chartHeight = 350
+}): Promise<JSX.Element> {
+  // const chartHeight = 350
   // NOTE: Uncomment this code in Chapter 7
 
   // const { yAxisLabels, topLabel } = generateYAxis(revenue);
@@ -25,7 +25,7 @@ export default async function RevenueChart ({
 
   return (
     <div className='w-full md:col-span-4'>
-      <h2 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
+      <h2 className={`${fonts.lusitana} mb-4 text-xl md:text-2xl`}>
         Recent Revenue
       </h2>
       {/* NOTE: Uncomment this code in Chapter 7 */}
