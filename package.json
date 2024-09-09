@@ -4,8 +4,7 @@
     "build": "next build",
     "dev": "next dev",
     "start": "next start",
-    "lint": "ts-standard",
-    "seed": "node -r dotenv/config ./scripts/seed.js"
+    "lint": "ts-standard"
   },
   "dependencies": {
     "@heroicons/react": "^2.1.5",
