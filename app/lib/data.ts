@@ -12,6 +12,8 @@ import { formatCurrency } from './utils'
 
 export async function fetchRevenue (): Promise<Revenue[]> {
   try {
+    await new Promise((resolve) => setTimeout(resolve, 4000))
+
     const data = await sql<Revenue>`SELECT * FROM revenue`
 
     return data.rows
