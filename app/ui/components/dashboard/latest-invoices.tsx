@@ -2,15 +2,12 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 // import clsx from 'clsx'
 // import Image from 'next/image'
 import { fonts } from '@/app/ui/fonts'
-import { LatestInvoice } from '@/app/lib/definitions'
 import clsx from 'clsx'
 import Image from 'next/image'
+import { fetchLatestInvoices } from '@/app/lib/data'
 
-export default async function LatestInvoices ({
-  latestInvoices
-}: {
-  latestInvoices: LatestInvoice[]
-}): Promise<JSX.Element> {
+export default async function LatestInvoices (): Promise<JSX.Element> {
+  const latestInvoices = await fetchLatestInvoices()
   return (
     <div className='flex w-full flex-col md:col-span-4'>
       <h2 className={`${fonts.lusitana} mb-4 text-xl md:text-2xl`}>
