@@ -86,3 +86,10 @@ export interface InvoiceForm {
   amount: number
   status: 'pending' | 'paid'
 }
+
+export interface SearchParams {
+  searchParams: {
+    query: string
+    page: number
+  }
+}
