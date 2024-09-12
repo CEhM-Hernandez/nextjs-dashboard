@@ -7,10 +7,12 @@ import {
   UserCircleIcon
 } from '@heroicons/react/24/outline'
 import { Button } from '@/app/ui/components/button'
+import { createInvoice } from '@/app/lib/actions'
+/* eslint @typescript-eslint/no-misused-promises: */
 
 export default function Form ({ customers }: { customers: CustomerField[] }): JSX.Element {
   return (
-    <form>
+    <form action={createInvoice}>
       <div className='rounded-md bg-gray-50 p-4 md:p-6'>
         {/* Customer Name */}
         <div className='mb-4'>
