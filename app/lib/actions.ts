@@ -10,6 +10,21 @@ const CreateAndUpdateInvoiceFormSchema = InvoiceSchema.omit({
   date: true
 })
 
+const errorMSG = (error: Error): string => {
+  const errorMessage = error.message !== null ? error.message : 'An unknown error occurred'
+
+  if (errorMessage.includes('out of range')) {
+    return 'The amount is too high'
+  } else if (errorMessage.includes('invalid input syntax for type uuid')) {
+    return 'User not found'
+  } else if (errorMessage.includes('invalid input syntax for type integer')) {
+    return 'Invalid amount'
+  } else if (errorMessage.includes('invalid input syntax for type')) {
+    return 'Invalid input'
+  }
+  return errorMessage
+}
+
 export async function createInvoice (formData: FormData): Promise<string | undefined> {
   const { customerId, amount, status } = CreateAndUpdateInvoiceFormSchema.parse({
     customerId: formData.get('customerId'),
@@ -19,14 +34,13 @@ export async function createInvoice (formData: FormData): Promise<string | undef
 
   const amountInCents = amount * 100
   const [date] = new Date().toISOString().split('T')
-
   try {
     await sql`
       INSERT INTO invoices (customer_id, amount, status, date)
       VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
     `
   } catch (error) {
-    return 'An error occurred while creating the invoice'
+    throw new Error(errorMSG(error as Error))
   }
 
   revalidatePath('dashboard/invoices')
@@ -49,21 +63,21 @@ export async function updateInvoice (id: string, formData: FormData): Promise<st
       WHERE id = ${id}
     `
   } catch (error) {
-    return 'An error occurred while updating the invoice'
+    throw new Error(errorMSG(error as Error))
   }
 
   revalidatePath('dashboard/invoices')
   redirect('/dashboard/invoices')
 }
 
-export async function deleteInvoice (id: string): Promise<string | undefined> {
+export async function deleteInvoice (id: string): Promise<string> {
   try {
     await sql`
       DELETE FROM invoices
       WHERE id = ${id}
     `
   } catch (error) {
-    return 'An error occurred while deleting the invoice'
+    throw new Error(errorMSG(error as Error))
   }
 
   revalidatePath('dashboard/invoices')
