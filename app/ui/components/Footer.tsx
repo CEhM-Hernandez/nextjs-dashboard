@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import AcmeLogo from '@/app/ui/components/acme-logo'
 
-export default function Footer () {
+export default function Footer (): JSX.Element {
   return (
     <footer className='min-h-80 p-0 m-0 flex items-center bg-[#0070f3] flex-wrap rounded-lg'>
       <div className='flex gap-8 flex-col md:flex-row max-w-5xl mx-auto'>
