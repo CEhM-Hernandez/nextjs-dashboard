@@ -93,3 +93,10 @@ export interface SearchParams {
     page: number
   }
 }
+
+export interface DashboardData {
+  numberOfCustomers: number
+  numberOfInvoices: number
+  totalPaidInvoices: string
+  totalPendingInvoices: string
+}
