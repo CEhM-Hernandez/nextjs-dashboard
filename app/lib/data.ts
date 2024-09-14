@@ -2,6 +2,7 @@ import { sql } from '@vercel/postgres'
 import {
   CustomerField,
   CustomersTableType,
+  DashboardData,
   InvoiceForm,
   InvoicesTable,
   LatestInvoice,
@@ -41,7 +42,7 @@ export async function fetchLatestInvoices (): Promise<LatestInvoice[]> {
   }
 }
 
-export async function fetchCardData (): Promise<any> {
+export async function fetchCardData (): Promise<DashboardData> {
   try {
     const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`
     const customerCountPromise = sql`SELECT COUNT(*) FROM customers`
