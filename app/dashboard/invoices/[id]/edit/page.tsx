@@ -1,4 +1,4 @@
-import Form from '@/app/ui/components/invoices/edit-form'
+import Form from '@/app/ui/components/invoices/Form'
 import Breadcrumbs from '@/app/ui/components/invoices/breadcrumbs'
 import { fetchCustomers, fetchInvoiceById } from '@/app/lib/data'
 import { notFound } from 'next/navigation'
@@ -9,8 +9,6 @@ export default async function Page ({ params }: { params: { id: string } }): Pro
     fetchInvoiceById(id),
     fetchCustomers()
   ])
-
-  console.log(invoice)
 
   if (invoice === undefined) {
     notFound()

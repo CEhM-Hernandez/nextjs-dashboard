@@ -149,8 +149,6 @@ export async function fetchInvoiceById (id: string): Promise<InvoiceForm> {
       amount: invoice.amount / 100
     }))
 
-    console.log('que chimba el vicio', invoice)
-
     return invoice[0]
   } catch (error) {
     console.error('Database Error:', error)
