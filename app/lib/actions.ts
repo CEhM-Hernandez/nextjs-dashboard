@@ -12,16 +12,6 @@ const CreateAndUpdateInvoiceFormSchema = InvoiceSchema.omit({
 
 const errorMSG = (error: Error): string => {
   const errorMessage = error.message !== null ? error.message : 'An unknown error occurred'
-
-  if (errorMessage.includes('out of range')) {
-    return 'The amount is too high'
-  } else if (errorMessage.includes('invalid input syntax for type uuid')) {
-    return 'User not found'
-  } else if (errorMessage.includes('invalid input syntax for type integer')) {
-    return 'Invalid amount'
-  } else if (errorMessage.includes('invalid input syntax for type')) {
-    return 'Invalid input'
-  }
   return errorMessage
 }
 
