@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt'
-import { db } from '@vercel/postgres'
+import { db, QueryResultRow } from '@vercel/postgres'
 import { invoices, customers, revenue, users } from '../lib/placeholder-data'
 
 const client = await db.connect()
 
-async function seedUsers (): Promise<any> {
+async function seedUsers (): Promise<QueryResultRow[]> {
   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`
   await client.sql`
     CREATE TABLE IF NOT EXISTS users (
@@ -29,7 +29,7 @@ async function seedUsers (): Promise<any> {
   return insertedUsers
 }
 
-async function seedInvoices (): Promise<any> {
+async function seedInvoices (): Promise<QueryResultRow> {
   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`
 
   await client.sql`
@@ -55,7 +55,7 @@ async function seedInvoices (): Promise<any> {
   return insertedInvoices
 }
 
-async function seedCustomers (): Promise<any> {
+async function seedCustomers (): Promise<QueryResultRow> {
   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`
 
   await client.sql`
@@ -80,7 +80,7 @@ async function seedCustomers (): Promise<any> {
   return insertedCustomers
 }
 
-async function seedRevenue (): Promise<any> {
+async function seedRevenue (): Promise<QueryResultRow> {
   await client.sql`
     CREATE TABLE IF NOT EXISTS revenue (
       month VARCHAR(4) NOT NULL UNIQUE,
@@ -101,7 +101,7 @@ async function seedRevenue (): Promise<any> {
   return insertedRevenue
 }
 
-export async function GET (): Promise<any> {
+export async function GET (): Promise<QueryResultRow> {
   try {
     await client.sql`BEGIN`
     await seedUsers()
