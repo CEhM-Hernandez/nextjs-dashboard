@@ -1,19 +1,29 @@
+'use client'
+
 import Link from 'next/link'
 import { Button } from '@/app/ui/components/button'
 import { createInvoice, updateInvoice } from '@/app/lib/actions'
-import { CustomerField, InvoiceForm } from '@/app/lib/definitions'
+import { CustomerField, InvoiceForm, State } from '@/app/lib/definitions'
 import AmountInput from './Forms/AmountInput'
 import ChooseCustomerInput from './Forms/ChoseCustomerInput'
 import Fieldset from './Forms/Fieldset'
+import { useActionState } from 'react'
 /* eslint @typescript-eslint/no-misused-promises: */
 
 export default function Form ({ customers, invoice }: { customers: CustomerField[], invoice?: InvoiceForm }): JSX.Element {
+  const initialState: State = {
+    errors: {},
+    message: null
+  }
+
+  const [CreateState, CreateformAction] = useActionState(createInvoice, initialState)
+  const state = invoice !== undefined ? CreateState : initialState
   return (
-    <form action={invoice !== undefined ? updateInvoice.bind(null, invoice.id) : createInvoice}>
+    <form action={invoice !== undefined ? updateInvoice.bind(null, invoice.id) : CreateformAction}>
       <div className='rounded-md bg-gray-50 p-4 md:p-6'>
-        <ChooseCustomerInput customers={customers} invoice={invoice} />
-        <AmountInput invoice={invoice} />
-        <Fieldset invoice={invoice} />
+        <ChooseCustomerInput customers={customers} invoice={invoice} state={state} />
+        <AmountInput invoice={invoice} state={state} />
+        <Fieldset invoice={invoice} state={state} />
       </div>
       <div className='mt-6 flex justify-end gap-4'>
         <Link
@@ -22,7 +32,11 @@ export default function Form ({ customers, invoice }: { customers: CustomerField
         >
           Cancel
         </Link>
-        <Button type='submit'>{invoice !== undefined ? 'Edit' : 'Create'} Invoice</Button>
+        <Button
+          type='submit'
+        >
+          {invoice !== undefined ? 'Edit' : 'Create'} Invoice
+        </Button>
       </div>
     </form>
   )

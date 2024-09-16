@@ -1,13 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use server'
 
 import { sql } from '@vercel/postgres'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { InvoiceSchema } from './schemas'
+import { z } from 'zod'
+import { State } from './definitions'
 
-const CreateAndUpdateInvoiceFormSchema = InvoiceSchema.omit({
-  id: true,
-  date: true
+const InvoiceSchema = z.object({
+  customerId: z.string({
+    invalid_type_error: 'Please select a valid customer'
+  }),
+  amount: z.coerce
+    .number()
+    .gt(10, {
+      message: 'Please enter an amount greater than $10.'
+    }),
+  status: z.enum(['pending', 'paid'], {
+    invalid_type_error: 'Please select an invoice status.'
+  })
 })
 
 const errorMSG = (error: Error): string => {
@@ -15,12 +26,20 @@ const errorMSG = (error: Error): string => {
   return errorMessage
 }
 
-export async function createInvoice (formData: FormData): Promise<string | undefined> {
-  const { customerId, amount, status } = CreateAndUpdateInvoiceFormSchema.parse({
+export async function createInvoice (prevState: State, formData: FormData): Promise<any> {
+  const validatedFields = InvoiceSchema.safeParse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
     status: formData.get('status')
   })
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Create Invoice.'
+    }
+  }
+  const { customerId, amount, status } = validatedFields.data
 
   const amountInCents = amount * 100
   const [date] = new Date().toISOString().split('T')
@@ -37,12 +56,20 @@ export async function createInvoice (formData: FormData): Promise<string | undef
   redirect('/dashboard/invoices')
 }
 
-export async function updateInvoice (id: string, formData: FormData): Promise<string | undefined> {
-  const { customerId, amount, status } = CreateAndUpdateInvoiceFormSchema.parse({
+export async function updateInvoice (id: string, formData: FormData): Promise<any> {
+  const validatedFields = InvoiceSchema.safeParse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
     status: formData.get('status')
   })
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Create Invoice.'
+    }
+  }
+  const { customerId, amount, status } = validatedFields.data
 
   const amountInCents = amount * 100
 
