@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import bcrypt from 'bcrypt'
 import { db, QueryResultRow } from '@vercel/postgres'
 import { invoices, customers, revenue, users } from '../lib/placeholder-data'
 
 const client = await db.connect()
 
-async function seedUsers (): Promise<QueryResultRow[]> {
+async function seedUsers (): Promise<any> {
   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`
   await client.sql`
     CREATE TABLE IF NOT EXISTS users (
@@ -29,7 +30,7 @@ async function seedUsers (): Promise<QueryResultRow[]> {
   return insertedUsers
 }
 
-async function seedInvoices (): Promise<QueryResultRow> {
+async function seedInvoices (): Promise<any> {
   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`
 
   await client.sql`
@@ -55,7 +56,7 @@ async function seedInvoices (): Promise<QueryResultRow> {
   return insertedInvoices
 }
 
-async function seedCustomers (): Promise<QueryResultRow> {
+async function seedCustomers (): Promise<any> {
   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`
 
   await client.sql`
@@ -80,7 +81,7 @@ async function seedCustomers (): Promise<QueryResultRow> {
   return insertedCustomers
 }
 
-async function seedRevenue (): Promise<QueryResultRow> {
+async function seedRevenue (): Promise<any> {
   await client.sql`
     CREATE TABLE IF NOT EXISTS revenue (
       month VARCHAR(4) NOT NULL UNIQUE,
