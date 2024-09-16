@@ -29,7 +29,7 @@ async function seedUsers (): Promise<QueryResultRow[]> {
   return insertedUsers
 }
 
-async function seedInvoices (): Promise<QueryResultRow> {
+async function seedInvoices (): Promise<QueryResultRow[]> {
   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`
 
   await client.sql`
@@ -55,7 +55,7 @@ async function seedInvoices (): Promise<QueryResultRow> {
   return insertedInvoices
 }
 
-async function seedCustomers (): Promise<QueryResultRow> {
+async function seedCustomers (): Promise<QueryResultRow[]> {
   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`
 
   await client.sql`
@@ -80,7 +80,7 @@ async function seedCustomers (): Promise<QueryResultRow> {
   return insertedCustomers
 }
 
-async function seedRevenue (): Promise<QueryResultRow> {
+async function seedRevenue (): Promise<QueryResultRow[]> {
   await client.sql`
     CREATE TABLE IF NOT EXISTS revenue (
       month VARCHAR(4) NOT NULL UNIQUE,
