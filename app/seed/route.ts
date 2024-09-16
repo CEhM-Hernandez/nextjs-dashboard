@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import bcrypt from 'bcrypt'
-import { db, QueryResultRow } from '@vercel/postgres'
+import { db } from '@vercel/postgres'
 import { invoices, customers, revenue, users } from '../lib/placeholder-data'
 
 const client = await db.connect()
@@ -102,7 +102,7 @@ async function seedRevenue (): Promise<any> {
   return insertedRevenue
 }
 
-export async function GET (): Promise<QueryResultRow> {
+export async function GET (): Promise<any> {
   try {
     await client.sql`BEGIN`
     await seedUsers()
