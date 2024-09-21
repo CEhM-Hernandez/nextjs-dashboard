@@ -8,22 +8,21 @@ import AmountInput from './Forms/AmountInput'
 import ChooseCustomerInput from './Forms/ChoseCustomerInput'
 import Fieldset from './Forms/Fieldset'
 import { useActionState } from 'react'
-/* eslint @typescript-eslint/no-misused-promises: */
 
 export default function Form ({ customers, invoice }: { customers: CustomerField[], invoice?: InvoiceForm }): JSX.Element {
   const initialState: State = {
     errors: {},
     message: null
   }
+  const isEdit = invoice !== undefined
 
-  const updateInvoiceWithId = invoice !== undefined ? updateInvoice.bind(null, invoice.id) : () => null
+  const updateInvoiceWithId = isEdit ? updateInvoice.bind(null, invoice.id) : () => null
 
   const [CreateState, CreateformAction] = useActionState(createInvoice, initialState)
   const [EditState, EditformAction] = useActionState(updateInvoiceWithId, initialState)
-
-  const state = invoice !== undefined ? EditState : CreateState
+  const state = isEdit ? EditState : CreateState
   return (
-    <form action={invoice !== undefined ? EditformAction : CreateformAction}>
+    <form action={isEdit ? EditformAction : CreateformAction}>
       <div className='rounded-md bg-gray-50 p-4 md:p-6'>
         <ChooseCustomerInput customers={customers} invoice={invoice} state={state} />
         <AmountInput invoice={invoice} state={state} />
@@ -39,7 +38,7 @@ export default function Form ({ customers, invoice }: { customers: CustomerField
         <Button
           type='submit'
         >
-          {invoice !== undefined ? 'Edit' : 'Create'} Invoice
+          {isEdit ? 'Edit' : 'Create'} Invoice
         </Button>
       </div>
     </form>
