@@ -3,7 +3,6 @@ import { CheckIcon, ClockIcon } from '@heroicons/react/24/outline'
 
 export default function Fieldset ({ invoice, state }: { invoice?: InvoiceForm, state: State }): JSX.Element {
   const { errors } = state
-  console.log('errors', errors)
 
   return (
     <fieldset>

@@ -16,10 +16,14 @@ export default function Form ({ customers, invoice }: { customers: CustomerField
     message: null
   }
 
+  const updateInvoiceWithId = invoice !== undefined ? updateInvoice.bind(null, invoice.id) : () => null
+
   const [CreateState, CreateformAction] = useActionState(createInvoice, initialState)
-  const state = invoice !== undefined ? CreateState : initialState
+  const [EditState, EditformAction] = useActionState(updateInvoiceWithId, initialState)
+
+  const state = invoice !== undefined ? EditState : CreateState
   return (
-    <form action={invoice !== undefined ? updateInvoice.bind(null, invoice.id) : CreateformAction}>
+    <form action={invoice !== undefined ? EditformAction : CreateformAction}>
       <div className='rounded-md bg-gray-50 p-4 md:p-6'>
         <ChooseCustomerInput customers={customers} invoice={invoice} state={state} />
         <AmountInput invoice={invoice} state={state} />
